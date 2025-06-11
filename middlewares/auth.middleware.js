@@ -1,9 +1,14 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/model.user");
 
+
 const authMiddleware = async (req, res, next) => {
   try {
-    const authHeader = req.headers("authorization");
+    if (!process.env.JWT_SECRET) {
+      throw new Error("JWT_SECRET is not defined in environment variables");
+    }
+    
+    const authHeader = req.headers.authorization;
     if (!authHeader) {
       return res.status(401).json({ message: "Access denied. No token provided" });
     }
@@ -33,3 +38,5 @@ const authMiddleware = async (req, res, next) => {
     return res.status(500).json({ message: "Server Error", error: error.message });
   }
 };
+
+module.exports = authMiddleware;

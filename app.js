@@ -1,14 +1,22 @@
-const express = require("express");
 const dotenv  = require("dotenv");
-// const authRoutes = require("./routes/authRoutes");
+dotenv.config();
+
+if (!process.env.JWT_SECRET) {
+  console.error('JWT_SECRET is not loaded from .env file');
+  process.exit(1);
+}
+
+const express = require("express");
+const cors = require("cors");
+const authRoutes = require("./routes/auth.route");
 // const blogRoutes = require("./routes/blogRoutes");
 
-dotenv.config();
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 
-// app.use("/api/auth", authRoutes);
+app.use("/api/auth", authRoutes);
 // app.use("/api/blogs", blogRoutes);
 
 app.get("/", (req, res) => {
