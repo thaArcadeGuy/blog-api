@@ -9,7 +9,7 @@ if (!process.env.JWT_SECRET) {
 const express = require("express");
 const cors = require("cors");
 const authRoutes = require("./routes/auth.route");
-// const blogRoutes = require("./routes/blogRoutes");
+const blogRoutes = require("./routes/blog.route");
 
 const app = express();
 
@@ -17,7 +17,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
-// app.use("/api/blogs", blogRoutes);
+app.use("/api/blogs", blogRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hello, World!");
