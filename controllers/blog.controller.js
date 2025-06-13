@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const Blog = require("../models/model.blog");
 const { readingTime } = require("../utils/utils");
 
@@ -62,10 +63,67 @@ const getAllBlogs = async (req, res, next) => {
   }
 }
 
+const getUserBlogs = async (req, res, next) => {
+  try {
+    if (!req.user || !req.user._id) {
+      return res.status(401).json({
+        status: false,
+        message: "Unauthorized access. User not found."
+      });
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(req.user._id)) {
+      return res.status(400).json({
+        status: false,
+        message: "Invalid user ID"
+      });
+    }
+
+    const blogs = await Blog
+      .find({ author: req.user._id })
+      .select(req.fields)
+      .populate("author", { username: 1 })
+      .sort({ createdAt: -1 })
+      .skip(req.pagination.start)
+      .limit(req.pagination.sizePerPage);
+
+    if (blogs.length === 0) {
+      return res.status(404).json({
+        status: false,
+        message: "You have created no blogs yet",
+        pageInfo: req.pageInfo,
+        data: []
+      });
+    }
+
+    return res.status(200).json({
+      status: true,
+      message: "Your blogs fetched successfully",
+      pageInfo: req.pageInfo,
+      data: blogs
+    });
+
+  } catch (error) {
+    error.source = "Fetching user blogs controller";
+    next(error);
+  }
+}
+
 const getBlogById = async (req, res, next) => {
   try {
-    const blog = await Blog
-      .findById(req.params.id)
+
+    const { id } = req.params;
+
+    console.log("Blog ID from request params:", id);
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        status: false,
+        message: "Invalid blog ID format"
+      });
+    }
+
+    const blog = await Blog.findById(id)
       .populate("author", { username: 1 });
 
     if (!blog) {
@@ -214,6 +272,7 @@ const updateBlogState = async (req, res, next) => {
 module.exports = {
   createBlog,
   getAllBlogs,
+  getUserBlogs,
   getBlogById,
   updateBlog,
   deleteBlog,

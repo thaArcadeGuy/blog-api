@@ -1,4 +1,5 @@
 const filterByPublished = (req, res, next) => {
+  req.findFilter = req.findFilter || {};
   req.findFilter.state = "published";
   next(); 
 };

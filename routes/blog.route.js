@@ -8,10 +8,16 @@ const pagination = require("../middlewares/pagination");
 
 // Public routes
 blogRouter.get("/", queryMiddleware.filterAndSort, queryMiddleware.filterByPublished, pagination, blogController.getAllBlogs);
-blogRouter.get("/:id", blogController.getBlogById);
+
+blogRouter.get("/:id", queryMiddleware.filterByPublished, blogController.getBlogById);
 
 // Protected Routes
 blogRouter.use(authMiddleware);
+
+
+blogRouter.get("/user/blogs",  queryMiddleware.filterAndSort, pagination, blogController.getUserBlogs);
+
+
 
 blogRouter.post("/", blogController.createBlog);
 blogRouter.put("/:id", blogController.updateBlog);
