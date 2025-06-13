@@ -41,7 +41,16 @@ const getAllBlogs = async (req, res, next) => {
 
     const  pageInfo = req.pageInfo;
 
-    return res.json({
+    if (blogs.length === 0) {
+      return res.status(404).json({
+        status: false,
+        message: "No blogs found matching your criteria",
+        pageInfo,
+        data: []
+      });
+    }
+
+    return res.status(200).json({
       status: true,
       message: "Blogs fetched successfully",
       pageInfo,
