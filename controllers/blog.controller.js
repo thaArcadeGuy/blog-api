@@ -1,4 +1,5 @@
 const Blog = require("../models/model.blog");
+const { readingTime } = require("../utils/utils");
 
 const createBlog = async (req, res, next) => {
   try {

@@ -5,4 +5,4 @@ const readingTime = (blog) => {
   return estimatedTime === 0 ? 1 : estimatedTime;
 }
 
-module.exports = readingTime;
+module.exports = { readingTime };
