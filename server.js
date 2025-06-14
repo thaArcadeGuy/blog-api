@@ -1,5 +1,8 @@
 const app = require("./app");
 const connectToDB = require("./config/db");
+const verifyEnv = require("./config/verifyEnv")
+
+verifyEnv();
 
 const validateEnv = () => {
   const required = ['JWT_SECRET', 'PORT', 'MONGO_DB_URI'];
