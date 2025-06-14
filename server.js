@@ -5,7 +5,7 @@ const verifyEnv = require("./config/verifyEnv")
 verifyEnv();
 
 const validateEnv = () => {
-  const required = ['JWT_SECRET', 'PORT', 'MONGO_DB_URI'];
+  const required = ['JWT_SECRET', 'PORT', 'MONGODB_URI'];
   const missing = required.filter(key => !process.env[key]);
   
   if (missing.length > 0) {

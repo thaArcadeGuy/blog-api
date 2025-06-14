@@ -10,8 +10,8 @@ const getDbUri = () => {
   const env = process.env.NODE_ENV || "development";
   const uriMap = {
     test: process.env.MONGO_DB_URI_TEST,
-    production: process.env.MONGO_DB_URI_PROD || process.env.MONGODB_URI, // Fallback for platforms like Render
-    development: process.env.MONGO_DB_URI
+    production: process.env.MONGODB_URI || process.env.MONGODB_URI, // Fallback for platforms like Render
+    development: process.env.MONGODB_URI
   };
 
   const uri = uriMap[env];

@@ -1,5 +1,5 @@
 const requiredEnvVars = [
-  'MONGO_DB_URI_PROD',
+  'MONGODB_URI',
   'JWT_SECRET',
   'NODE_ENV'
 ];
